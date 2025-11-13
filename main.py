@@ -1,5 +1,6 @@
 import flet as ft 
 from datetime import datetime
+
 def main(page: ft.Page):
     page.title = 'Мое первое приложение'
     greeting_text = ft.Text("Hello world")
@@ -7,6 +8,7 @@ def main(page: ft.Page):
     history_text = ft.Text('история приветствий:')
     page.theme_mode
     age_input = ft.TextField(label='введите возраст')
+
     def on_button_click(_):
         name = name_input.value.strip()
         age = age_input.value.strip()
@@ -36,11 +38,25 @@ def main(page: ft.Page):
         print(greeting_history)
         history_text.value = 'история приветствий:'
         page.update()
+
+
+    def dl_history(_):
+        if greeting_history:
+            greeting_history.pop()
+            history_text.value = 'История приветствий:\n ' + '\n'.join(greeting_history)
+        else:
+            print('История пуста!')
+        page.update()
+
+
+
+    dl_button = ft.ElevatedButton('delete', on_click=dl_history)
+        
     clear_button = ft.IconButton(icon=ft.Icons.DELETE, on_click=clear_history)
     # name_button_text = ft.TextButton('send')
     # name_button_icon = ft.IconButton(icon=ft.Icons.SEND)
 
-    page.add(greeting_text, name_input, age_input, name_button, clear_button, history_text)
+    page.add(greeting_text, name_input, age_input, name_button, clear_button, dl_button, history_text)
 
 
 ft.app(target=main)
